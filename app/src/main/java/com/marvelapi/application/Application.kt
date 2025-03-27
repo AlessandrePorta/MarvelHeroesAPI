@@ -10,7 +10,7 @@ class Application : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@Application)
-            modules(retrofitModule)
+            modules(retrofitModule, viewModelModule, serviceModule, useCaseModule, repositoryModule)
         }
     }
 }

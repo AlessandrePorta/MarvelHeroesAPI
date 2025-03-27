@@ -4,6 +4,10 @@ plugins {
     alias(libs.plugins.nav.safe.args)
 }
 
+val marvelPublicAPIKey = System.getenv("MARVEL_PUBLIC_API_KEY") ?: ""
+val marvelPrivateAPIKey = System.getenv("MARVEL_PRIVATE_API_KEY") ?: ""
+val marvelBASEURL = System.getenv("MARVEL_BASE_URL") ?: ""
+
 android {
     namespace = "com.marvelheroesapi"
     compileSdk = 34
@@ -15,11 +19,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        val marvelAPIKey = System.getenv("MARVEL_API_KEY") ?: ""
-        val marvelBASEURL = System.getenv("MARVEL_BASE_URL") ?: ""
-
-        buildConfigField("String", "API_KEY", "\"$marvelAPIKey\"")
-        buildConfigField("String", "BASE_URL", "\"$marvelBASEURL\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,6 +30,12 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    defaultConfig{
+        buildConfigField("String", "MARVEL_PUBLIC_API_KEY", "\"$marvelPublicAPIKey\"")
+        buildConfigField("String", "MARVEL_PRIVATE_API_KEY", "\"$marvelPrivateAPIKey\"")
+        buildConfigField("String", "BASE_URL", "\"$marvelBASEURL\"")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

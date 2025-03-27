@@ -21,7 +21,7 @@ class MarvelViewModel(
         .flatMapLatest { query ->
             getCharactersPagingUseCase(
                 query,
-                pagingConfig = PagingConfig(1)
+                pagingConfig = PagingConfig(20)
             )
         }.cachedIn(viewModelScope)
 

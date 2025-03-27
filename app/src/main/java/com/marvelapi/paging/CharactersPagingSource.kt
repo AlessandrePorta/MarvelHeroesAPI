@@ -1,43 +1,45 @@
-package com.marvelapi.paging
-
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.marvelapi.model.Character
-import com.marvelapi.services.response.DataContainerResponse
-import com.marvelapi.services.response.toModel
+import com.marvelapi.services.response.CharactersResponse
+import com.marvelapi.services.response.WrapperResponse
 
 class CharactersPagingSource(
-    private val fetchCharacters: suspend (Int) -> DataContainerResponse,
-) : PagingSource<Int, Character>() {
+    val fetchCharacters: suspend () -> WrapperResponse<CharactersResponse>,
+) : PagingSource<Int, CharactersResponse>() {
+    override fun getRefreshKey(
+        state: PagingState<Int, CharactersResponse>
+    ): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(
+                anchorPosition
+            )
+            anchorPage?.prevKey?.plus(1) ?:
+            anchorPage?.nextKey?.minus(1)
+        }
+    }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
+    override suspend fun load(
+        params: LoadParams<Int>
+    ): LoadResult<Int, CharactersResponse> {
         return try {
-            val offset = params.key ?: 1
-
-            val response = fetchCharacters(offset)
-            val responseOffset = response.offset
-            val total = response.total
-
-            LoadResult.Page(
-                data = response.results.map { it.toModel() },
-                prevKey = null,
-                nextKey = if (responseOffset < total) {
-                    responseOffset + LIMIT
-                } else null
+            val page = params.key ?: 0
+            val offset = page * PAGE_SIZE
+            val response = fetchCharacters()
+            val nextKey =
+                if (offset >= response.dataContainer.total) null
+                else page + 1
+            return LoadResult.Page(
+                data = response.dataContainer.results,
+                prevKey = null, // Only paging forward.
+                nextKey = nextKey
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(LIMIT) ?: anchorPage?.nextKey?.minus(LIMIT)
-        }
-    }
-
     companion object {
-        private const val LIMIT = 1
+        const val PAGE_SIZE = 20
     }
 }
+

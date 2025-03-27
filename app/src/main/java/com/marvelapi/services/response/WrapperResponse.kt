@@ -2,10 +2,10 @@ package com.marvelapi.services.response
 
 import com.google.gson.annotations.SerializedName
 
-data class WrapperResponse(
+data class WrapperResponse<T>(
     @SerializedName("code") var code: Int? = null,
     @SerializedName("status") var status: String? = null,
-    @SerializedName("data") var dataContainer: DataContainerResponse,
+    @SerializedName("data") var dataContainer: DataContainerResponse<T>,
     @SerializedName("etag") var etag: String? = null,
     @SerializedName("copyright") var copyright: String? = null,
     @SerializedName("attributionText") var attributionText: String? = null,

@@ -1,9 +1,9 @@
 package com.marvelapi.repository
 
 import androidx.paging.PagingSource
-import com.marvelapi.model.Character
+import com.marvelapi.services.response.CharactersResponse
 
 interface MarvelRepository {
 
-    fun getCharacters() : PagingSource<Int, Character>
+    fun getCharacters(query : String?) : PagingSource<Int, CharactersResponse>
 }

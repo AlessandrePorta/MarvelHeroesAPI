@@ -1,15 +1,15 @@
 package com.marvelapi.repository.impl
 
-import com.marvelapi.paging.CharactersPagingSource
+import CharactersPagingSource
 import com.marvelapi.repository.MarvelRepository
 import com.marvelapi.services.MarvelCharactersService
 
 class MarvelRepositoryImpl(private val marvelCharactersService: MarvelCharactersService) :
     MarvelRepository {
 
-    override fun getCharacters() = CharactersPagingSource(
+    override fun getCharacters(query: String?) = CharactersPagingSource(
         fetchCharacters = {
-            marvelCharactersService.getCharacters(it).dataContainer
+            marvelCharactersService.getCharacters(query)
         }
     )
 }

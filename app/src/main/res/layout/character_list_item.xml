@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cvMovies"
+    android:id="@+id/cvCharacters"
     android:layout_width="match_parent"
     android:layout_height="360dp"
     android:layout_margin="8dp"
@@ -9,7 +9,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clMovie"
+        android:id="@+id/clCharacter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_grey"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/ivMovieImg"
+            android:id="@+id/ivCharacterImg"
             android:layout_width="match_parent"
             android:layout_height="312dp"
             android:scaleType="fitXY"
@@ -27,13 +27,13 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/tvMovieName"
+            android:id="@+id/tvCharacterName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginStart="8dp"
             android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/ivMovieImg"
+            app:layout_constraintTop_toBottomOf="@id/ivCharacterImg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/white"

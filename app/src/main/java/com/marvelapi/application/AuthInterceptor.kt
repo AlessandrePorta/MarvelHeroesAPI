@@ -10,7 +10,7 @@ class AuthInterceptor(
     private val publicKey: String,
     private val privateKey: String,
     private val calendar: Calendar
-): Interceptor {
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -33,9 +33,9 @@ class AuthInterceptor(
         )
     }
 
-    private fun digestMD5(hash : String) : String {
+    private fun digestMD5(hash: String): String {
         val md = MessageDigest.getInstance("MD5")
-        return BigInteger(1,md.digest(hash.toByteArray())).toString(16).padStart(32,'0')
+        return BigInteger(1, md.digest(hash.toByteArray())).toString(16).padStart(32, '0')
     }
 
     companion object {

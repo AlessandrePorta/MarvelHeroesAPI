@@ -29,6 +29,7 @@ roomCommon = "2.6.1"
 roomKtx = "2.6.1"
 
 [libraries]
+kapt = { group = "androidx.room", name="room-compiler", version.ref="roomKtx"}
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 androidx-nav-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigationSafeArgsGradlePlugin" }
 com-squareup-okhttp3-logging = {group="com.squareup.okhttp3", name="logging-interceptor"}
@@ -71,6 +72,7 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+android-room-runtime = {group = "androidx.room", name = "room-runtime", version.ref= "roomKtx"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

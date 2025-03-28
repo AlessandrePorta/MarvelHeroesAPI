@@ -72,8 +72,8 @@ val retrofitModule = module {
 
 }
 
-val viewModelModule = module{
-    viewModel{ MarvelViewModel(get()) }
+val viewModelModule = module {
+    viewModel { MarvelViewModel(get()) }
 }
 
 val serviceModule = module {
@@ -81,7 +81,7 @@ val serviceModule = module {
 }
 
 val useCaseModule = module {
-    factory<CharactersUseCase>{ GetCharactersPagingUseCaseImpl(get()) }
+    factory<CharactersUseCase> { GetCharactersPagingUseCaseImpl(get()) }
 }
 
 val repositoryModule = module {

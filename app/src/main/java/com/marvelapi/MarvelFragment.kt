@@ -18,8 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.marvelapi.adapter.LoadListAdapter
 import com.marvelapi.adapter.MarvelAdapter
 import com.marvelapi.adapter.MarvelAdapter.Companion.CHARACTERS_VIEW_TYPE
-import com.marvelapi.model.Character
-import com.marvelapi.services.response.CharactersResponse
+import com.marvelapi.database.CharacterEntity
 import com.marvelapi.viewmodel.MarvelViewModel
 import com.marvelheroesapi.R
 import com.marvelheroesapi.databinding.FragmentMainBinding
@@ -32,7 +31,7 @@ class MarvelFragment : Fragment() {
 
     private val marvelAdapter = MarvelAdapter(::navigateToCharacterDetails)
 
-    private val marvelViewModel : MarvelViewModel by viewModel()
+    private val marvelViewModel: MarvelViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +59,7 @@ class MarvelFragment : Fragment() {
     private fun getCharacters() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                marvelViewModel.pagingDataFlow.collect {
+                marvelViewModel.getCharacters(null).collect {
                     marvelAdapter.submitData(it)
                 }
             }
@@ -125,7 +124,7 @@ class MarvelFragment : Fragment() {
         }, viewLifecycleOwner)
     }
 
-    private fun navigateToCharacterDetails(character: CharactersResponse) {
+    private fun navigateToCharacterDetails(character: CharacterEntity) {
 //        findNavController()
 //            .navigate(
 //                MarvelFragmentDirections(

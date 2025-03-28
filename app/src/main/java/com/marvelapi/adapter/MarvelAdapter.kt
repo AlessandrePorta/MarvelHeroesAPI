@@ -6,13 +6,13 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.marvelapi.services.response.CharactersResponse
+import com.marvelapi.database.CharacterEntity
 import com.marvelheroesapi.databinding.CharacterListItemBinding
 
 class MarvelAdapter(
-    private val onMovieClicked: (CharactersResponse) -> Unit
+    private val onCharacterClicked: (CharacterEntity) -> Unit
 ) :
-    PagingDataAdapter<CharactersResponse, MarvelAdapter.CharactersViewHolder>(diffCallback) {
+    PagingDataAdapter<CharacterEntity, MarvelAdapter.CharactersViewHolder>(diffCallback) {
 
     override fun getItemViewType(position: Int) = CHARACTERS_VIEW_TYPE
 
@@ -27,7 +27,7 @@ class MarvelAdapter(
 
     override fun onBindViewHolder(holder: CharactersViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it, onMovieClicked)
+            holder.bind(it, onCharacterClicked)
         }
     }
 
@@ -35,13 +35,13 @@ class MarvelAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            item: CharactersResponse,
-            onCharacterClick: (CharactersResponse) -> Unit
+            item: CharacterEntity,
+            onCharacterClick: (CharacterEntity) -> Unit
         ) {
-            binding.tvMovieName.text = item.name
+            binding.tvCharacterName.text = item.name
             Glide.with(itemView.context)
-                .load(item.thumbnail?.path+item.thumbnail?.extension)
-                .into(binding.ivMovieImg)
+                .load(item.thumbnail)
+                .into(binding.ivCharacterImg)
             binding.root.setOnClickListener { onCharacterClick(item) }
         }
 
@@ -50,12 +50,18 @@ class MarvelAdapter(
     companion object {
         const val CHARACTERS_VIEW_TYPE = 1
 
-        private val diffCallback = object : DiffUtil.ItemCallback<CharactersResponse>() {
-            override fun areItemsTheSame(oldItem: CharactersResponse, newItem: CharactersResponse): Boolean {
+        private val diffCallback = object : DiffUtil.ItemCallback<CharacterEntity>() {
+            override fun areItemsTheSame(
+                oldItem: CharacterEntity,
+                newItem: CharacterEntity
+            ): Boolean {
                 return oldItem.name == newItem.name
             }
 
-            override fun areContentsTheSame(oldItem: CharactersResponse, newItem: CharactersResponse): Boolean {
+            override fun areContentsTheSame(
+                oldItem: CharacterEntity,
+                newItem: CharacterEntity
+            ): Boolean {
                 return oldItem == newItem
             }
         }

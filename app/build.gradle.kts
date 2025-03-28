@@ -32,7 +32,7 @@ android {
         }
     }
 
-    defaultConfig{
+    defaultConfig {
         buildConfigField("String", "MARVEL_PUBLIC_API_KEY", "\"$marvelPublicAPIKey\"")
         buildConfigField("String", "MARVEL_PRIVATE_API_KEY", "\"$marvelPrivateAPIKey\"")
         buildConfigField("String", "BASE_URL", "\"$marvelBASEURL\"")
@@ -51,7 +51,9 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.kapt)
+    implementation(libs.androidx.core.testing)
+    implementation(libs.androidx.nav.safe.args.gradle.plugin)
     implementation(libs.com.squareup.okhttp3.logging)
     implementation(platform(libs.com.squareup.okhttp3))
     implementation(libs.androidx.pag.runt)
@@ -90,4 +92,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.kotlin.test.junit)
+    implementation(libs.kotlinx.coroutines.test)
+    implementation(libs.mockk)
 }

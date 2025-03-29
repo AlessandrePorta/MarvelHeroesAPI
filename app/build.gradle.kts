@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.nav.safe.args)
+    kotlin("kapt")
 }
 
 val marvelPublicAPIKey = System.getenv("MARVEL_PUBLIC_API_KEY") ?: ""
@@ -12,6 +13,8 @@ android {
     namespace = "com.marvelheroesapi"
     compileSdk = 34
 
+    android.buildFeatures.buildConfig = true
+
     defaultConfig {
         applicationId = "com.marvelheroesapi"
         minSdk = 24
@@ -20,6 +23,19 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+
+    viewBinding {
+        enable = true
+    }
+
+    defaultConfig {
+        buildConfigField("String", "MARVEL_PUBLIC_API_KEY", "\"$marvelPublicAPIKey\"")
+        buildConfigField("String", "MARVEL_PRIVATE_API_KEY", "\"$marvelPrivateAPIKey\"")
+        buildConfigField("String", "BASE_URL", "\"$marvelBASEURL\"")
     }
 
     buildTypes {
@@ -31,12 +47,6 @@ android {
             )
         }
     }
-
-    defaultConfig {
-        buildConfigField("String", "MARVEL_PUBLIC_API_KEY", "\"$marvelPublicAPIKey\"")
-        buildConfigField("String", "MARVEL_PRIVATE_API_KEY", "\"$marvelPrivateAPIKey\"")
-        buildConfigField("String", "BASE_URL", "\"$marvelBASEURL\"")
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -45,20 +55,24 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        compose = true
         viewBinding = true
         buildConfig = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
 }
 
 dependencies {
-    implementation(libs.kapt)
+    kapt(libs.android.room.compiler)
+    implementation(libs.android.room.paging)
+    implementation(libs.android.room.ktx)
+    implementation(libs.android.room.runtime)
     implementation(libs.androidx.core.testing)
-    implementation(libs.androidx.nav.safe.args.gradle.plugin)
     implementation(libs.com.squareup.okhttp3.logging)
     implementation(platform(libs.com.squareup.okhttp3))
     implementation(libs.androidx.pag.runt)
-    implementation(libs.androidx.nav.test)
-    implementation(libs.androidx.lifecycle.commom)
     implementation(libs.org.kotlinx.serialization)
     implementation(libs.com.github.glide)
     implementation(libs.com.squareup.retrofit2)
@@ -66,12 +80,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.livedata.ktx)
     implementation(libs.androidx.viewmodel.ktx)
-    implementation(libs.org.coroutines)
     implementation(libs.io.koin)
     implementation(libs.androidx.nav.frag.ktx)
     implementation(libs.androidx.nav.ui.ktx)
-    implementation(libs.androidx.nav.df)
-    implementation(libs.androidx.nav.comp)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -83,8 +94,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.cardview)
-    implementation(libs.androidx.room.common)
-    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -92,7 +101,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.kotlin.test.junit)
-    implementation(libs.kotlinx.coroutines.test)
-    implementation(libs.mockk)
 }

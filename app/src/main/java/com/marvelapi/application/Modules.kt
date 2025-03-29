@@ -1,14 +1,17 @@
 package com.marvelapi.application
 
+import com.marvelapi.database.CharacterDatabase
+import com.marvelapi.database.DatabaseProvider
 import com.marvelapi.repository.MarvelRepository
 import com.marvelapi.repository.impl.MarvelRepositoryImpl
 import com.marvelapi.services.MarvelCharactersService
 import com.marvelapi.usecase.CharactersUseCase
-import com.marvelapi.usecase.GetCharactersPagingUseCaseImpl
+import com.marvelapi.usecase.CharactersUseCaseImpl
 import com.marvelapi.viewmodel.MarvelViewModel
 import com.marvelheroesapi.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -21,7 +24,7 @@ import java.util.concurrent.TimeUnit
 
 private const val HTTP_CLIENT_BASE = "HTTP_CLIENT_BASE"
 
-private const val CONNECT_TIMEOUT = 10L
+private const val CONNECT_TIMEOUT = 5L
 
 private const val READ_TIMEOUT = 30L
 private const val WRITE_TIMEOUT = 30L
@@ -31,7 +34,6 @@ private const val TIMEZONE_UTC = "UTC"
 private const val HTTP_CLIENT_MARVEL = "HTTP_CLIENT_MARVEL"
 
 val retrofitModule = module {
-
     factory<AuthInterceptor> {
         AuthInterceptor(
             publicKey = BuildConfig.MARVEL_PUBLIC_API_KEY,
@@ -68,12 +70,24 @@ val retrofitModule = module {
             .addConverterFactory(get())
             .build()
     }
+}
 
+val databaseModule = module {
+    single {
+        DatabaseProvider(androidContext())
+    }
 
+    single {
+        get<DatabaseProvider>().getDatabase()
+    }
+
+    single {
+        get<CharacterDatabase>().characterDao()
+    }
 }
 
 val viewModelModule = module {
-    viewModel { MarvelViewModel(get()) }
+    viewModel { MarvelViewModel(get(), get()) }
 }
 
 val serviceModule = module {
@@ -81,9 +95,11 @@ val serviceModule = module {
 }
 
 val useCaseModule = module {
-    factory<CharactersUseCase> { GetCharactersPagingUseCaseImpl(get()) }
+    factory<CharactersUseCase> { CharactersUseCaseImpl(get()) }
 }
 
 val repositoryModule = module {
-    factory<MarvelRepository> { MarvelRepositoryImpl(get()) }
+    factory<MarvelRepository> { MarvelRepositoryImpl(get(), get()) }
 }
+
+

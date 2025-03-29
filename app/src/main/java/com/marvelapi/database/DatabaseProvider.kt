@@ -3,18 +3,20 @@ package com.marvelapi.database
 import android.content.Context
 import androidx.room.Room
 
-object DatabaseProvider {
-    private var characterDatabase: CharacterDatabase? = null
+class DatabaseProvider(private val context: Context) {
 
-    fun getInstance(context: Context): CharacterDatabase {
-        return characterDatabase ?: synchronized(this) {
-            val instance = Room.databaseBuilder(
+    @Volatile
+    private var _database: CharacterDatabase? = null
+
+    fun getDatabase(): CharacterDatabase {
+        return _database ?: synchronized(this) {
+            _database ?: Room.databaseBuilder(
                 context.applicationContext,
                 CharacterDatabase::class.java,
                 "character_database"
-            ).build()
-            characterDatabase = instance
-            instance
+            ).build().also {
+                _database = it
+            }
         }
     }
 }

@@ -6,12 +6,10 @@ import com.marvelapi.repository.MarvelRepository
 import kotlinx.coroutines.flow.Flow
 
 class CharactersUseCaseImpl(private val marvelRepository: MarvelRepository) : CharactersUseCase {
-    override fun invoke(
-        query: String?
-    ): Flow<PagingData<CharacterEntity>> {
-        return marvelRepository.getCharacters(query)
+
+    override fun invoke(query: String?): Flow<PagingData<CharacterEntity>> {
+        val queryToUse = query?.takeIf { it.isNotBlank() } ?: ""
+        return marvelRepository.getCharacters(queryToUse)
     }
-
 }
-
 

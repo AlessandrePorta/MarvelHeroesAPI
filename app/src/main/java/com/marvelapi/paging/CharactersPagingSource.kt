@@ -1,3 +1,6 @@
+package com.marvelapi.paging
+
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.marvelapi.database.CharacterDao
@@ -25,11 +28,13 @@ class CharactersPagingSource(
                     thumbnail = it.thumbnail?.path + it.thumbnail?.extension
                 )
             }
+            Log.d("PagingSource", "Fetched ${response.status} characters")
 
-            characterDao.insertCharacters(characters)
+            if (characters.isNotEmpty()) {
+                characterDao.insert(characters)
+            }
 
             val nextKey = if (offset + PAGE_SIZE >= response.dataContainer.total) null else page + 1
-
             LoadResult.Page(
                 data = characters,
                 prevKey = null,
@@ -51,5 +56,10 @@ class CharactersPagingSource(
         const val PAGE_SIZE = 20
     }
 }
+
+
+
+
+
 
 

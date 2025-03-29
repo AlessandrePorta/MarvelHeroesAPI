@@ -1,25 +1,26 @@
 package com.marvelapi.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 
 @Dao
 interface CharacterDao {
 
-    @Insert
-    suspend fun insertCharacters(characters: List<CharacterEntity>)
-
-    @Query("SELECT * FROM characters WHERE name LIKE :query")
-    suspend fun searchCharacters(query: String): List<CharacterEntity>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(character: List<CharacterEntity>)
 
     @Query("SELECT * FROM characters")
     suspend fun getAllCharacters(): List<CharacterEntity>
 
-    @Query("DELETE FROM characters")
-    suspend fun deleteAllCharacters()
+    @Query("SELECT * FROM characters WHERE id = :characterId")
+    suspend fun getCharacterById(characterId: Int): CharacterEntity?
 
-    @Update
-    suspend fun updateCharacter(character: CharacterEntity)
+    @Delete
+    suspend fun delete(character: CharacterEntity)
+
+    @Query("SELECT * FROM characters WHERE character_name LIKE :name")
+    suspend fun getCharactersByName(name: String): List<CharacterEntity>
 }

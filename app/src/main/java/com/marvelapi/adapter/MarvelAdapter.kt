@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marvelapi.database.CharacterEntity
+import com.marvelapi.model.CharacterVO
 import com.marvelheroesapi.databinding.CharacterListItemBinding
 
 class MarvelAdapter(
-    private val onCharacterClicked: (CharacterEntity) -> Unit
+    private val onCharacterClicked: (CharacterVO) -> Unit
 ) :
-    PagingDataAdapter<CharacterEntity, MarvelAdapter.CharactersViewHolder>(diffCallback) {
+    PagingDataAdapter<CharacterVO, MarvelAdapter.CharactersViewHolder>(diffCallback) {
 
     override fun getItemViewType(position: Int) = CHARACTERS_VIEW_TYPE
 
@@ -35,8 +36,8 @@ class MarvelAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            item: CharacterEntity,
-            onCharacterClick: (CharacterEntity) -> Unit
+            item: CharacterVO,
+            onCharacterClick: (CharacterVO) -> Unit
         ) {
             binding.tvCharacterName.text = item.name
             Glide.with(itemView.context)
@@ -50,17 +51,17 @@ class MarvelAdapter(
     companion object {
         const val CHARACTERS_VIEW_TYPE = 1
 
-        private val diffCallback = object : DiffUtil.ItemCallback<CharacterEntity>() {
+        private val diffCallback = object : DiffUtil.ItemCallback<CharacterVO>() {
             override fun areItemsTheSame(
-                oldItem: CharacterEntity,
-                newItem: CharacterEntity
+                oldItem: CharacterVO,
+                newItem: CharacterVO
             ): Boolean {
                 return oldItem.name == newItem.name
             }
 
             override fun areContentsTheSame(
-                oldItem: CharacterEntity,
-                newItem: CharacterEntity
+                oldItem: CharacterVO,
+                newItem: CharacterVO
             ): Boolean {
                 return oldItem == newItem
             }

@@ -1,11 +1,11 @@
 package com.marvelapi.repository
 
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.marvelapi.database.CharacterEntity
-import com.marvelapi.services.response.CharactersResponse
-import com.marvelapi.services.response.WrapperResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MarvelRepository {
-    fun getCharacters(query: String?): Flow<PagingData<CharacterEntity>>
+    fun getCharacters(query : String, pagingConfig: PagingConfig): Flow<PagingData<CharacterEntity>>
+    fun getFavorites(): Flow<PagingData<CharacterEntity>>
 }

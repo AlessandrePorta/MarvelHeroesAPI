@@ -2,6 +2,7 @@ package com.marvelapi.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.filter
 import com.marvelapi.database.CharacterDao
@@ -34,16 +35,19 @@ class MarvelViewModel(
         _query.debounce(DEBOUNCE_TIME)
             .flatMapLatest { query ->
                 if (favoriteMode) {
-                    getCharactersPagingUseCase(query)
+                    getCharactersPagingUseCase(pagingConfig = PagingConfig(PAGE_SIZE))
                 } else {
-                    getCharactersPagingUseCase(query)
+                    getCharactersPagingUseCase(
+                        query = query,
+                        pagingConfig = PagingConfig(PAGE_SIZE, enablePlaceholders = false)
+                    )
                 }
             }
-            .cachedIn(viewModelScope).combine(_query) { pagingData, query ->
-                pagingData.filter { it.name.startsWith(query) }
-            }
-
+    }.cachedIn(viewModelScope).combine(_query) { pagingData, query ->
+        pagingData.filter { it.name!!.startsWith(query) }
     }
+
+}
 
 
 //
@@ -69,5 +73,5 @@ class MarvelViewModel(
 //        this.favoriteMode = favoriteMode ?: false
 //    }
 
-}
+
 

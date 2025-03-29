@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.marvelapi.adapter.LoadListAdapter
 import com.marvelapi.adapter.MarvelAdapter
 import com.marvelapi.database.CharacterEntity
+import com.marvelapi.model.CharacterVO
 import com.marvelapi.viewmodel.MarvelViewModel
 import com.marvelheroesapi.R
 import com.marvelheroesapi.databinding.FragmentMainBinding
@@ -56,21 +57,22 @@ class MarvelFragment : Fragment() {
 
     private fun getCharacters() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                marvelViewModel.pagingDataFlow.collect{pagingData ->
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                marvelViewModel.pagingDataFlow.collect { pagingData ->
                     marvelAdapter.submitData(pagingData)
                 }
             }
         }
     }
 
-    private fun getListState(){
+    private fun getListState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 marvelAdapter.loadStateFlow.collectLatest { state ->
-                    binding.tvEmpty.isVisible = state.append is LoadState.NotLoading && state.append.endOfPaginationReached && marvelAdapter.itemCount<1
-                    binding.groupError.isVisible = state.refresh is LoadState.Error && marvelAdapter.itemCount < 1
-
+                    binding.tvEmpty.isVisible =
+                        state.append is LoadState.NotLoading && state.append.endOfPaginationReached && marvelAdapter.itemCount < 1
+                    binding.groupError.isVisible =
+                        state.refresh is LoadState.Error && marvelAdapter.itemCount < 1
                 }
             }
         }
@@ -130,7 +132,7 @@ class MarvelFragment : Fragment() {
         }, viewLifecycleOwner)
     }
 
-    private fun navigateToCharacterDetails(character: CharacterEntity) {
+    private fun navigateToCharacterDetails(character: CharacterVO) {
     }
 
     companion object {

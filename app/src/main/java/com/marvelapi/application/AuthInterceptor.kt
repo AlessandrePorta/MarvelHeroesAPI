@@ -10,7 +10,7 @@ class AuthInterceptor(
     private val publicKey: String,
     private val privateKey: String,
     private val calendar: Calendar
-): Interceptor {
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()

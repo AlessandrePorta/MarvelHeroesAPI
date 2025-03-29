@@ -11,11 +11,11 @@
         android:layout_height="0dp"
         android:layout_marginVertical="4dp"
         android:foregroundGravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/character_list_item"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        tools:listitem="@layout/character_list_item" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_empty"

@@ -4,20 +4,33 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.marvelapi.model.CharacterVO
 
-@Entity(
-    tableName = "characters",
-    indices = [Index(value = ["character_name"])] // Update to "character_name" to match the @ColumnInfo
-)
+@Entity
 data class CharacterEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey var id: Int? = null,
 
-    @ColumnInfo(name = "character_name")
-    val name: String,
+    @ColumnInfo(name = "name")
+    var name: String? = null,
 
-    @ColumnInfo(name = "character_description")
-    val description: String?,
+    @ColumnInfo(name = "description")
+    var description: String? = null,
 
-    @ColumnInfo(name = "thumbnail_url")
-    val thumbnail: String?
+    @ColumnInfo(name = "url")
+    var thumbnail: String? = null,
+
+    @ColumnInfo(name = "isFavorite")
+    var isFavorite: Boolean? = null
+) {
+    fun toModel() = CharacterVO(
+        id = id,
+        name = name,
+        description = description,
+        thumbnail = thumbnail,
+        isFavorite = isFavorite ?: false
+    )
+}
+
+fun CharacterVO.toEntity() = CharacterEntity(
+    this?.id, this?.name, this?.description, this?.thumbnail, this?.isFavorite
 )

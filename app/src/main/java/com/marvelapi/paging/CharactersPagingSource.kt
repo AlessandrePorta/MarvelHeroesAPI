@@ -6,10 +6,10 @@ import androidx.paging.PagingState
 import com.marvelapi.database.CharacterDao
 import com.marvelapi.database.CharacterEntity
 import com.marvelapi.services.MarvelCharactersService
-import com.marvelapi.services.response.CharactersResponse
-import com.marvelapi.services.response.toEntity
-import com.marvelapi.services.response.toModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.withContext
 
 class CharactersPagingSource(
@@ -25,12 +25,17 @@ class CharactersPagingSource(
             val queries = createQuery(offset)
             val response = marvelCharactersService.getCharacters(queries)
 
+            val favoriteIds = characterDao.getAllFavoriteCharacters()
+                .map { it.map { entity -> entity.id } }.first()
+
             val characters = response.dataContainer.results.map {
+                val isFavorite = favoriteIds.contains(it.id)
                 CharacterEntity(
                     id = it.id!!,
                     name = it.name!!,
                     description = it.description ?: "",
-                    thumbnail = it.thumbnail?.path + "." + it.thumbnail?.extension
+                    thumbnail = it.thumbnail?.path + "." + it.thumbnail?.extension,
+                    isFavorite
                 )
             }
             Log.d("Mapped Characters", characters.toString())
@@ -55,8 +60,17 @@ class CharactersPagingSource(
                 nextKey = nextKey
             )
         } catch (e: Exception) {
-            Log.e("PagingSource", "Error during data loading", e)
-            LoadResult.Error(e)
+            Log.e("PagingSource", "Error during API call, falling back to local DB", e)
+
+            val localData = characterDao.getAllCharacters()
+
+            if (localData.isNotEmpty()) {
+                LoadResult.Page(
+                    data = localData,
+                    prevKey = null,
+                    nextKey = null
+                )
+            } else LoadResult.Error(e)
         }
     }
 
@@ -74,7 +88,7 @@ class CharactersPagingSource(
         private const val NAME_STARTS_WITH = "nameStartsWith"
     }
 
-    private fun createQuery(offset : Int) = buildMap {
+    private fun createQuery(offset: Int) = buildMap {
         put(OFFSET, offset.toString())
         if (query.isNotEmpty()) put(NAME_STARTS_WITH, query)
     }

@@ -6,14 +6,19 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.filter
 import com.marvelapi.database.CharacterDao
+import com.marvelapi.database.toEntity
+import com.marvelapi.model.CharacterVO
 import com.marvelapi.usecase.CharactersUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 private const val DELAY_SEARCH_TIME = 500L
 
@@ -47,31 +52,25 @@ class MarvelViewModel(
         pagingData.filter { it.name!!.startsWith(query) }
     }
 
+    fun onFavoriteClick(character: CharacterVO) {
+        viewModelScope.launch {
+            character.id?.let {
+                dao.insertFavorite(character.toEntity())
+            }
+        }
+    }
+
+    fun search(newText: String?) {
+        coroutineJob?.cancel()
+        coroutineJob = viewModelScope.launch {
+            delay(DELAY_SEARCH_TIME)
+            _query.update {
+                newText.orEmpty()
+            }
+        }
+    }
+
 }
-
-
-//
-//    fun search(newText: String?) {
-//        coroutineJob?.cancel()
-//        coroutineJob = viewModelScope.launch {
-//            delay(DELAY_SEARCH_TIME)
-//            _query.update {
-//                newText.orEmpty()
-//            }
-//        }
-//    }
-//
-//    fun onFavoriteClick(character: Character) {
-//        viewModelScope.launch {
-//            character.id?.let {
-//                dao.insert(character.toEntity())
-//            }
-//        }
-//    }
-//
-//    fun setMode(favoriteMode: Boolean?) {
-//        this.favoriteMode = favoriteMode ?: false
-//    }
 
 
 

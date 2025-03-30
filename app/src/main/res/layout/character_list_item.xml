@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cvCharacters"
     android:layout_width="match_parent"
-    android:layout_height="360dp"
+    android:layout_height="220dp"
     android:layout_margin="8dp"
     android:elevation="5dp"
     app:cardCornerRadius="20dp">
@@ -20,11 +20,21 @@
         <ImageView
             android:id="@+id/ivCharacterImg"
             android:layout_width="match_parent"
-            android:layout_height="312dp"
+            android:layout_height="195dp"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivFavorite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/favorite_selector"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp"
+            />
 
         <TextView
             android:id="@+id/tvCharacterName"

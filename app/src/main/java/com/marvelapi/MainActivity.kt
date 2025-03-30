@@ -35,13 +35,11 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         toolbar.setupWithNavController(navController, appBarConfiguration)
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            toolbar.title = ""
             val isTopLevelDestinations =
                 appBarConfiguration.topLevelDestinations.contains(destination.id)
             if (!isTopLevelDestinations) {
-                toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-                toolbar.setNavigationOnClickListener {
-                    navController.popBackStack()
-                }
+                getToolbarGone()
             }
         }
     }
@@ -52,5 +50,9 @@ class MainActivity : AppCompatActivity() {
 
     fun getToolbarShow() {
         supportActionBar?.show()
+    }
+
+    override fun onBackPressed() {
+        navController.popBackStack()
     }
 }

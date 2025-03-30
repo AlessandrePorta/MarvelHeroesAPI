@@ -65,6 +65,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.android.material)
+    implementation(libs.androidx.viewmodel.compose)
     kapt(libs.android.room.compiler)
     implementation(libs.android.room.paging)
     implementation(libs.android.room.ktx)
@@ -79,7 +81,6 @@ dependencies {
     implementation(libs.com.squareup.retrofit2.converter)
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.livedata.ktx)
-    implementation(libs.androidx.viewmodel.ktx)
     implementation(libs.io.koin)
     implementation(libs.androidx.nav.frag.ktx)
     implementation(libs.androidx.nav.ui.ktx)

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivCharacterImg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivFavorite"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/favorite_selector"
+        app:layout_constraintTop_toTopOf="@id/ivCharacterImg"
+        app:layout_constraintEnd_toEndOf="@id/ivCharacterImg" />
+
+    <ImageView
+        android:id="@+id/ivShare"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/ic_share"
+        app:layout_constraintTop_toTopOf="@id/ivFavorite"
+        app:layout_constraintEnd_toStartOf="@id/ivFavorite"
+        app:layout_constraintBottom_toBottomOf="@id/ivFavorite"/>
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="@id/ivFavorite"
+        app:layout_constraintBottom_toBottomOf="@id/ivFavorite"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="24dp"
+        android:src="@drawable/ic_arrow_back"
+        />
+
+    <TextView
+        android:id="@+id/tvCharacterName"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/marvelfont"
+        android:text="Characters name"
+        android:textColor="@color/white"
+        android:textSize="60sp"
+        android:textAllCaps="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivCharacterImg" />
+
+    <TextView
+        android:id="@+id/tvCharacterDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16sp"
+        android:fontFamily="@font/marvelfont"
+        android:textColor="@color/white"
+        android:text="LOREM IPSUM LOREM IPSUM"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCharacterName" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,5 +8,5 @@ import retrofit2.http.QueryMap
 interface MarvelCharactersService {
 
     @GET("v1/public/characters")
-    suspend fun getCharacters(@QueryMap queries : Map<String, String>): WrapperResponse<CharactersResponse>
+    suspend fun getCharacters(@QueryMap queries: Map<String, String>): WrapperResponse<CharactersResponse>
 }

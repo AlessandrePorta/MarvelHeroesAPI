@@ -29,7 +29,8 @@ class SplashActivity : AppCompatActivity() {
 
             splashLogo.startAnimation(fadeOut)
 
-            fadeOut.setAnimationListener(object : android.view.animation.Animation.AnimationListener {
+            fadeOut.setAnimationListener(object :
+                android.view.animation.Animation.AnimationListener {
                 override fun onAnimationStart(animation: android.view.animation.Animation?) {
                 }
 

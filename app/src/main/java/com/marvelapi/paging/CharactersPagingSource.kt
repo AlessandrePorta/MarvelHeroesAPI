@@ -9,7 +9,6 @@ import com.marvelapi.services.MarvelCharactersService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.withContext
 
 class CharactersPagingSource(

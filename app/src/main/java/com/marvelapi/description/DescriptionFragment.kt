@@ -41,24 +41,24 @@ class DescriptionFragment : Fragment() {
         retrieveArgs()
     }
 
-    private fun init(){
-        binding.ivBack.setOnClickListener{
+    private fun init() {
+        binding.ivBack.setOnClickListener {
             findNavController().popBackStack()
         }
     }
 
     private fun retrieveArgs() = with(binding) {
-        var isFavorite : Boolean
+        var isFavorite: Boolean
         tvCharacterName.text = args.name
-        if(args.description.isEmpty()){
+        if (args.description.isEmpty()) {
             tvCharacterDescription.text = "No description available"
-        }else{
+        } else {
             tvCharacterDescription.text = args.description
         }
-        isFavorite = if(args.favorite == "true"){
+        isFavorite = if (args.favorite == "true") {
             ivFavorite.isSelected = true
             true
-        }else{
+        } else {
             ivFavorite.isSelected = false
             false
         }

@@ -7,7 +7,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.marvelapi.database.CharacterEntity
 import com.marvelapi.model.CharacterVO
 import com.marvelheroesapi.R
 import com.marvelheroesapi.databinding.CharacterListItemBinding

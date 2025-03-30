@@ -116,7 +116,8 @@ class MarvelFragment : Fragment() {
                 searchView.requestFocus()
                 searchView.queryHint = "Search"
 
-                val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val inputMethodManager =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
                 inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
 

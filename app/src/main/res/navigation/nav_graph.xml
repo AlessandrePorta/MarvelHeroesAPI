@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/marvelFragment"
         android:name="com.marvelapi.MarvelFragment"
-        android:label="MarvelFragment" >
+        android:label="MarvelFragment">
         <action
             android:id="@+id/action_marvelFragment_to_descriptionFragment"
             app:destination="@id/descriptionFragment" />
@@ -27,12 +27,10 @@
             app:argType="string" />
         <argument
             android:name="favorite"
-            app:argType="string"
-            />
+            app:argType="string" />
         <argument
             android:name="resourceuri"
-            app:argType="string"
-            />
+            app:argType="string" />
         <argument
             android:name="img"
             app:argType="string" />

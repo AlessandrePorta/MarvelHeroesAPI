@@ -35,7 +35,8 @@ class MarvelRepositoryImpl(
     }
 
     override fun getFavorites(): Flow<PagingData<CharacterEntity>> = Pager(
-        config = PagingConfig(pageSize = 20)){
+        config = PagingConfig(pageSize = 20)
+    ) {
         characterDao.getFavorites(true)
     }.flow
 }

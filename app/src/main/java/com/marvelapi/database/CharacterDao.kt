@@ -6,7 +6,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.marvelapi.model.CharacterVO
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,7 +21,7 @@ interface CharacterDao {
     suspend fun getAllCharacters(): List<CharacterEntity>
 
     @Query("SELECT * FROM characters WHERE isFavorite = :isFavorite ORDER BY name ASC")
-    fun getFavorites(isFavorite : Boolean) : PagingSource<Int, CharacterEntity>
+    fun getFavorites(isFavorite: Boolean): PagingSource<Int, CharacterEntity>
 
     @Query("SELECT * FROM characters WHERE isFavorite = 1")
     fun getAllFavoriteCharacters(): Flow<List<CharacterEntity>>

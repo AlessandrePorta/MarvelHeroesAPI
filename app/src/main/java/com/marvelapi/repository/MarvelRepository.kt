@@ -6,6 +6,6 @@ import com.marvelapi.database.CharacterEntity
 import kotlinx.coroutines.flow.Flow
 
 interface MarvelRepository {
-    fun getCharacters(query : String, pagingConfig: PagingConfig): Flow<PagingData<CharacterEntity>>
+    fun getCharacters(query: String, pagingConfig: PagingConfig): Flow<PagingData<CharacterEntity>>
     fun getFavorites(): Flow<PagingData<CharacterEntity>>
 }

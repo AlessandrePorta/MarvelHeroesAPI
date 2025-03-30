@@ -19,7 +19,7 @@ class CharactersPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterEntity> {
         val page = params.key ?: 1
-        val offset = (page - 1) * 20
+        val offset = (page - 1) * LIMIT
         return try {
             val queries = createQuery(offset)
             val response = marvelCharactersService.getCharacters(queries)
@@ -51,11 +51,12 @@ class CharactersPagingSource(
                 Log.d("Inserted Data", "Data inserted successfully")
             }
 
-            val nextKey = if (characters.size < 20) null else page + 1
+            val prevKey = if (page == 1) null else page - 1
+            val nextKey = if (characters.size < LIMIT) null else page + 1
             Log.d("PagingSource", "NextKey: $nextKey, PrevKey: null, DataSize: ${characters.size}")
             LoadResult.Page(
                 data = characters,
-                prevKey = null,
+                prevKey = prevKey,
                 nextKey = nextKey
             )
         } catch (e: Exception) {
@@ -82,7 +83,7 @@ class CharactersPagingSource(
 
     companion object {
         const val START_VALUE = 20
-        private const val LIMIT = 40
+        private const val LIMIT = 20
         private const val OFFSET = "offset"
         private const val NAME_STARTS_WITH = "nameStartsWith"
     }

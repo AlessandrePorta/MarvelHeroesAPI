@@ -55,7 +55,9 @@ class MarvelViewModelTest {
     fun `test getFavorites with non-empty result`() = runTest {
         val characters = flowOf(
             PagingData.from(
-                listOf()
+                listOf(
+                    CharacterVO(id = 1, name = "Spider-Man", description = "Hero", thumbnail = "path", isFavorite = true),
+                )
             )
         )
 
@@ -70,10 +72,10 @@ class MarvelViewModelTest {
     fun `test getFavorites with empty result`() = runTest {
         val characters = flowOf(
             PagingData.from(
-                listOf(CharacterVO(id = 1, name = "", description = "", thumbnail = "", isFavorite = false))
+                listOf()
             )
         )
-        val list = collectPagingDataToList(characters)
+        val list = characters.toList()
 
         assertTrue(list.isEmpty())
     }

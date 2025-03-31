@@ -12,7 +12,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/ivFavorites"
         app:layout_constraintStart_toEndOf="@id/ivLogo"
         app:layout_constraintTop_toTopOf="parent"
         app:title=" " />
@@ -21,10 +21,23 @@
         android:id="@+id/ivLogo"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
         android:src="@drawable/ic_marvel_logo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fcCharacters"/>
+
+    <ImageView
+        android:id="@+id/ivFavorites"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/favorite_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fcCharacters"
+        />
+
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcCharacters"

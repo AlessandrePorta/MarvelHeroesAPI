@@ -56,6 +56,7 @@ class MarvelFragment : Fragment() {
         setupMenu()
         getListState()
         setRetryButton()
+        (activity as MainActivity).getFavorites(marvelViewModel)
     }
 
     private fun getCharacters() {
@@ -114,7 +115,6 @@ class MarvelFragment : Fragment() {
 
                 searchView.isIconified = false
                 searchView.requestFocus()
-                searchView.queryHint = "Search"
 
                 val inputMethodManager =
                     requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -158,6 +158,7 @@ class MarvelFragment : Fragment() {
     }
 
     private fun navigateToCharacterDetails(character: CharacterVO) {
+        (activity as MainActivity).getToolbarGone()
         findNavController().navigate(
             MarvelFragmentDirections.actionMarvelFragmentToDescriptionFragment(
                 id = character.id.toString(),

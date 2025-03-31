@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.marvelapi.MainActivity
 import com.marvelapi.model.CharacterVO
 import com.marvelapi.viewmodel.MarvelViewModel
 import com.marvelheroesapi.databinding.FragmentDescriptionBinding
@@ -37,6 +38,7 @@ class DescriptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as MainActivity).getToolbarGone()
         init()
         retrieveArgs()
     }

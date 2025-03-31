@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.replay
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -31,6 +33,10 @@ class MarvelViewModel(
     private val getCharactersPagingUseCase: CharactersUseCase,
     private val dao: CharacterDao
 ) : ViewModel() {
+
+    fun getQuery(): String {
+        return _query.value
+    }
 
     private val _query = MutableStateFlow("")
     private var favoriteMode = false
@@ -49,7 +55,26 @@ class MarvelViewModel(
                 }
             }
     }.cachedIn(viewModelScope).combine(_query) { pagingData, query ->
-        pagingData.filter { it.name!!.startsWith(query) }
+        pagingData.filter {
+            if(query == "favorite"){
+                it.name!!.startsWith("")
+            } else{
+                it.name!!.startsWith(query)
+                }
+        }
+    }
+
+    fun getFavorites() {
+        viewModelScope.launch{
+            favoriteMode = !favoriteMode
+            if(favoriteMode) {
+                _query.update { "favorite" }
+            } else {
+                _query.update {
+                    ""
+                }
+            }
+        }
     }
 
     fun onFavoriteClick(character: CharacterVO) {
@@ -69,7 +94,6 @@ class MarvelViewModel(
             }
         }
     }
-
 }
 
 

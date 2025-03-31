@@ -22,8 +22,14 @@ pagingVersion = "3.2.1"
 okhttp3Version = "4.9.0"
 room = "2.6.1"
 materialVer = "1.6.0"
+mockKVer = "1.12.0"
+kotlinTestVer = "1.5.21"
+coroutinesTestVer = "1.6.0"
 
 [libraries]
+android-coroutines-test = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref="coroutinesTestVer"}
+android-kotlin-test = {group = "org.jetbrains.kotlin", name="kotlin-test", version.ref="kotlinTestVer"}
+android-mockK = { group ="io.mockk", name= "mockk", version.ref = "mockKVer"}
 android-material = { group = "com.google.android.material", name= "material", version.ref= "materialVer"}
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 com-squareup-okhttp3-logging = {group="com.squareup.okhttp3", name="logging-interceptor"}

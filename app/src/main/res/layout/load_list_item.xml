@@ -14,7 +14,7 @@
         android:paddingBottom="24dp"
         android:text="Erro"
         android:textAlignment="center"
-        android:textColor="@color/black" />
+        android:textColor="@color/white" />
 
     <ProgressBar
         android:id="@+id/progress_bar_loading_more"

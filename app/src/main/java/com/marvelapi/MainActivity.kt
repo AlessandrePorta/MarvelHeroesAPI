@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.marvelapi.viewmodel.MarvelViewModel
 import com.marvelheroesapi.R
 import com.marvelheroesapi.databinding.ActivityMainBinding
 
@@ -29,6 +30,13 @@ class MainActivity : AppCompatActivity() {
     private fun init() {
         setupNavController(binding.toolbarApp)
         setSupportActionBar(binding.toolbarApp)
+    }
+
+    fun getFavorites(viewModel: MarvelViewModel){
+        binding.ivFavorites.setOnClickListener {
+            binding.ivFavorites.isSelected = !binding.ivFavorites.isSelected
+            viewModel.getFavorites()
+        }
     }
 
     private fun setupNavController(toolbar: Toolbar) {

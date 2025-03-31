@@ -22,14 +22,16 @@ pagingVersion = "3.2.1"
 okhttp3Version = "4.9.0"
 room = "2.6.1"
 materialVer = "1.6.0"
-mockKVer = "1.12.0"
+mockKVer = "1.13.9"
 kotlinTestVer = "1.5.21"
 coroutinesTestVer = "1.6.0"
 junitKtx = "1.2.1"
+runnerVer = "1.5.2"
+roboletricVer="4.11.1"
 
 [libraries]
 android-coroutines-test = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref="coroutinesTestVer"}
-android-kotlin-test = {group = "org.jetbrains.kotlin", name="kotlin-test", version.ref="kotlinTestVer"}
+android-kotlin-test = {group = "org.jetbrains.kotlin", name="kotlin-test-junit", version.ref="kotlinTestVer"}
 android-mockK = { group ="io.mockk", name= "mockk", version.ref = "mockKVer"}
 android-material = { group = "com.google.android.material", name= "material", version.ref= "materialVer"}
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
@@ -68,6 +70,8 @@ android-room-ktx = {group = "androidx.room", name ="room-ktx", version.ref = "ro
 android-room-paging = {group = "androidx.room", name = "room-paging", version.ref = "room"}
 android-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
+runner-test = {group = "androidx.test", name="runner", version.ref="runnerVer"}
+roboletric-test = {group = "org.robolectric", name="robolectric", version.ref="roboletricVer"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

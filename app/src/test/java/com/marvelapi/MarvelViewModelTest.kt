@@ -1,100 +1,65 @@
 package com.marvelapi
 
-import androidx.paging.PagingData
-import androidx.paging.map
 import com.marvelapi.database.CharacterDao
+import com.marvelapi.database.toEntity
 import com.marvelapi.model.CharacterVO
 import com.marvelapi.usecase.CharactersUseCaseImpl
 import com.marvelapi.viewmodel.MarvelViewModel
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
-import kotlin.test.Test
+import org.junit.After
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import kotlinx.coroutines.test.resetMain
 
-@ExperimentalCoroutinesApi
-@FlowPreview
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [28])
 class MarvelViewModelTest {
 
-    @MockK
-    private val marvelUseCaseMock: CharactersUseCaseImpl = mockk(relaxed = true)
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @MockK
-    private val characterDaoMock: CharacterDao = mockk()
+    private lateinit var marvelUseCaseMock: CharactersUseCaseImpl
 
-    private val marvelViewModel = MarvelViewModel(marvelUseCaseMock, characterDaoMock)
-    private val testDispatcher = StandardTestDispatcher()
+    @MockK
+    private lateinit var characterDaoMock: CharacterDao
 
+    private lateinit var marvelViewModel: MarvelViewModel
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
-    fun setup() {
+    fun setUp() {
+        MockKAnnotations.init(this)
         Dispatchers.setMain(testDispatcher)
 
+        marvelViewModel = MarvelViewModel(marvelUseCaseMock, characterDaoMock)
     }
 
-    private suspend fun collectPagingDataToList(flow: Flow<PagingData<CharacterVO>>): List<CharacterVO> {
-        val result = mutableListOf<CharacterVO>()
-        flow.collect { pagingData ->
-            pagingData.map { entity ->
-                result.add(entity)
-            }
-        }
-        return result
-    }
-
-    @Test
-    fun `test getFavorites with non-empty result`() = runTest {
-        val characters = flowOf(
-            PagingData.from(
-                listOf(
-                    CharacterVO(id = 1, name = "Spider-Man", description = "Hero", thumbnail = "path", isFavorite = true),
-                )
-            )
-        )
-
-        val list = characters.toList()
-
-        assertTrue(list.isNotEmpty())
-        assertEquals(1, list.size)
-        assertEquals("Spider-Man", list.first())
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
-    fun `test getFavorites with empty result`() = runTest {
-        val characters = flowOf(
-            PagingData.from(
-                listOf()
-            )
-        )
-        val list = characters.toList()
+    fun `when character is passed to onFavoriteClick, it should be saved`() = runTest {
+        coEvery { characterDaoMock.insertFavorite(any()) } returns Unit
 
-        assertTrue(list.isEmpty())
-    }
+        val character = CharacterVO(1, "Test", "Test", "Test", "Test", false)
 
-    @Test
-    fun `test getCharacters with non-empty result`() = runTest {
-        val characters = flowOf(
-            PagingData.from(
-                listOf(
-                    CharacterVO(id = 1, name = "Spider-Man", description = "Hero", thumbnail = "path", isFavorite = true),
-                    CharacterVO(id = 2, name = "Iron Man", description = "Hero", thumbnail = "path", isFavorite = false)
-                )
-            )
-        )
+        marvelViewModel.onFavoriteClick(character)
 
-        val list = collectPagingDataToList(characters)
-
-        assertTrue(list.isNotEmpty())
-        assertEquals(1, list.size)
-        assertEquals("Spider-Man", list.first().name)
+        coVerify { characterDaoMock.insertFavorite(character.toEntity()) }
     }
 }

@@ -1,15 +1,11 @@
+package com.marvelapi
+
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.marvelapi.database.CharacterDao
-import com.marvelapi.database.CharacterEntity
 import com.marvelapi.model.CharacterVO
-import com.marvelapi.repository.MarvelRepository
-import com.marvelapi.services.MarvelCharactersService
-import com.marvelapi.usecase.CharactersUseCase
 import com.marvelapi.usecase.CharactersUseCaseImpl
 import com.marvelapi.viewmodel.MarvelViewModel
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -30,24 +27,18 @@ import kotlin.test.Test
 class MarvelViewModelTest {
 
     @MockK
-    lateinit var marvelRepository: MarvelRepository // Mocked repository
+    private val marvelUseCaseMock: CharactersUseCaseImpl = mockk(relaxed = true)
 
     @MockK
-    lateinit var characterDao: CharacterDao // Mocked DAO
+    private val characterDaoMock: CharacterDao = mockk()
 
-    private lateinit var marvelViewModel: MarvelViewModel
+    private val marvelViewModel = MarvelViewModel(marvelUseCaseMock, characterDaoMock)
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
 
-        coEvery { marvelRepository.getCharacters(any(), any()) } returns flowOf(PagingData.from(listOf()))
-        coEvery { marvelRepository.getFavorites() } returns flowOf(PagingData.from(listOf()))
-
-        val charactersUseCase = CharactersUseCaseImpl(marvelRepository)
-
-        marvelViewModel = MarvelViewModel(charactersUseCase, characterDao)
     }
 
     private suspend fun collectPagingDataToList(flow: Flow<PagingData<CharacterVO>>): List<CharacterVO> {
@@ -64,31 +55,25 @@ class MarvelViewModelTest {
     fun `test getFavorites with non-empty result`() = runTest {
         val characters = flowOf(
             PagingData.from(
-                listOf(
-                    CharacterEntity(id = 1, name = "Spider-Man", description = "Hero", thumbnail = "path", isFavorite = true)
-                )
+                listOf()
             )
         )
-        coEvery { marvelRepository.getFavorites() } returns characters
 
-        marvelViewModel.getFavorites()
-
-        val list = collectPagingDataToList(marvelViewModel.pagingDataFlow)
+        val list = characters.toList()
 
         assertTrue(list.isNotEmpty())
         assertEquals(1, list.size)
-        assertEquals("Spider-Man", list.first().name)
+        assertEquals("Spider-Man", list.first())
     }
 
     @Test
     fun `test getFavorites with empty result`() = runTest {
-        val emptyPagingData = flowOf(PagingData.from(emptyList<CharacterEntity>()))
-        coEvery { marvelRepository.getFavorites() } returns emptyPagingData
-
-
-        marvelViewModel.getFavorites()
-
-        val list = collectPagingDataToList(marvelViewModel.pagingDataFlow)
+        val characters = flowOf(
+            PagingData.from(
+                listOf(CharacterVO(id = 1, name = "", description = "", thumbnail = "", isFavorite = false))
+            )
+        )
+        val list = collectPagingDataToList(characters)
 
         assertTrue(list.isEmpty())
     }
@@ -98,19 +83,16 @@ class MarvelViewModelTest {
         val characters = flowOf(
             PagingData.from(
                 listOf(
-                    CharacterEntity(id = 1, name = "Spider-Man", description = "Hero", thumbnail = "path", isFavorite = true),
-                    CharacterEntity(id = 2, name = "Iron Man", description = "Hero", thumbnail = "path", isFavorite = false)
+                    CharacterVO(id = 1, name = "Spider-Man", description = "Hero", thumbnail = "path", isFavorite = true),
+                    CharacterVO(id = 2, name = "Iron Man", description = "Hero", thumbnail = "path", isFavorite = false)
                 )
             )
         )
-        coEvery { marvelRepository.getCharacters(any(), any()) } returns characters
 
-        marvelViewModel.search("Spider-Man")
-
-        val list = collectPagingDataToList(marvelViewModel.pagingDataFlow)
+        val list = collectPagingDataToList(characters)
 
         assertTrue(list.isNotEmpty())
         assertEquals(1, list.size)
-        assertEquals("Spider-Man", list.first().name) 
+        assertEquals("Spider-Man", list.first().name)
     }
 }

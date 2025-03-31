@@ -67,6 +67,7 @@ android {
 dependencies {
     implementation(libs.android.material)
     implementation(libs.androidx.viewmodel.compose)
+    implementation(libs.androidx.junit.ktx)
     kapt(libs.android.room.compiler)
     implementation(libs.android.room.paging)
     implementation(libs.android.room.ktx)

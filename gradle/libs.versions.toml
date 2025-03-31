@@ -72,6 +72,7 @@ android-room-compiler = { module = "androidx.room:room-compiler", version.ref = 
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 runner-test = {group = "androidx.test", name="runner", version.ref="runnerVer"}
 roboletric-test = {group = "org.robolectric", name="robolectric", version.ref="roboletricVer"}
+room-testing ={group = "androidx.room", name="room-testing", version.ref="room"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

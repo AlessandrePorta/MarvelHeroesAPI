@@ -17,8 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.replay
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -56,18 +54,18 @@ class MarvelViewModel(
             }
     }.cachedIn(viewModelScope).combine(_query) { pagingData, query ->
         pagingData.filter {
-            if(query == "favorite"){
+            if (query == "favorite") {
                 it.name!!.startsWith("")
-            } else{
+            } else {
                 it.name!!.startsWith(query)
-                }
+            }
         }
     }
 
     fun getFavorites() {
-        viewModelScope.launch{
+        viewModelScope.launch {
             favoriteMode = !favoriteMode
-            if(favoriteMode) {
+            if (favoriteMode) {
                 _query.update { "favorite" }
             } else {
                 _query.update {

@@ -28,6 +28,6 @@
             android:name="com.marvelapi.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.MarvelHeroesAPI"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+            android:windowSoftInputMode="stateVisible|adjustResize" />
     </application>
 </manifest>

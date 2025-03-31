@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarApp)
     }
 
-    fun getFavorites(viewModel: MarvelViewModel){
+    fun getFavorites(viewModel: MarvelViewModel) {
         binding.ivFavorites.setOnClickListener {
             binding.ivFavorites.isSelected = !binding.ivFavorites.isSelected
             viewModel.getFavorites()
